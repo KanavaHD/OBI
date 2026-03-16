@@ -1,0 +1,59 @@
+MSBuild version 17.14.40+3e7442088 for .NET Framework
+Build started 17/03/2026 1.05.32.
+
+Project "C:\Users\hawdi\Desktop\Obi\obs\OBSMonitor.vcxproj" on node 1 (default targets).
+DriverBuildNotifications:
+  Building 'OBSMonitor' with toolset 'WindowsKernelModeDriver10.0' and the 'Universal' target platform.
+  Using KMDF 1.15.
+PrepareForBuild:
+  Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+InitializeBuildStatus:
+  Touching "C:\Users\hawdi\Desktop\Obi\obs\build\obs_driver\OBSMonitor.tlog\unsuccessfulbuild".
+ClCompile:
+  C:\Program Files\Microsoft Visual Studio\2022\Professional\VC\Tools\MSVC\14.44.35207\bin\HostX86\x64\CL.exe /c /IC:\Users\hawdi\Desktop\Obi\obs\build\obs_driver\ /Zi /nologo /W3 /WX- /diagnostics:column /Ox /Os /Oy- /D NDEBUG /D _AMD64_ /D AMD64 /D _KERNEL_MODE /D _WIN64 /D _AMD64_ /D AMD64 /D _WIN32_WINNT=0x0A00 /D WINVER=0x0A00 /D WINNT=1 /D NTDDI_VERSION=0xA000010 /GF /Gm- /Zp8 /GS- /Gy /fp:precise /Zc:wchar_t- /Zc:forScope /Zc:inline /GR- /Fo"C:\Users\hawdi\Desktop\Obi\obs\build\obs_driver\\" /Fd"C:\Users\hawdi\Desktop\Obi\obs\build\obs_driver\vc143.pdb" /external:W3 /Gz /wd4603 /wd4627 /wd4986 /wd4987 /FI"C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\shared\warning.h" /FC /errorReport:queue /kernel -cbstring -d2epilogunwind  /d1nodatetime /d1import_no_registry /d2AllowCompatibleILVersions /d2Zi+ obs_monitor.c
+  obs_monitor.c
+C:\Users\hawdi\Desktop\Obi\obs\obs_monitor.c(1,1): warning C4117: macro name '_KERNEL_MODE' is reserved, '#define' ignored [C:\Users\hawdi\Desktop\Obi\obs\OBSMonitor.vcxproj]
+Link:
+  C:\Program Files\Microsoft Visual Studio\2022\Professional\VC\Tools\MSVC\14.44.35207\bin\HostX86\x64\link.exe /ERRORREPORT:QUEUE /OUT:"C:\Users\hawdi\Desktop\Obi\obs\bin\OBSMonitor.sys" /VERSION:"10.0" /INCREMENTAL:NO /NOLOGO /WX /SECTION:"INIT,d" "C:\Program Files (x86)\Windows Kits\10\lib\10.0.26100.0\km\x64\BufferOverflowFastFailK.lib" "C:\Program Files (x86)\Windows Kits\10\lib\10.0.26100.0\km\x64\ntoskrnl.lib" "C:\Program Files (x86)\Windows Kits\10\lib\10.0.26100.0\km\x64\hal.lib" "C:\Program Files (x86)\Windows Kits\10\lib\10.0.26100.0\km\x64\wmilib.lib" /NODEFAULTLIB /MANIFEST:NO /DEBUG /PDB:"C:\Users\hawdi\Desktop\Obi\obs\bin\OBSMonitor.pdb" /SUBSYSTEM:NATIVE,"10.00" /Driver /OPT:REF /OPT:ICF /ENTRY:"DriverEntry" /RELEASE /IMPLIB:"C:\Users\hawdi\Desktop\Obi\obs\bin\OBSMonitor.lib" /MERGE:"_TEXT=.text;_PAGE=PAGE" /MACHINE:X64 /PROFILE /kernel /IGNORE:4198,4010,4037,4039,4065,4070,4078,4087,4089,4221,4108,4088,4218,4218,4235 /osversion:10.0 /pdbcompress /debugtype:pdata C:\Users\hawdi\Desktop\Obi\obs\build\obs_driver\obs_monitor.obj
+  OBSMonitor.vcxproj -> C:\Users\hawdi\Desktop\Obi\obs\bin\OBSMonitor.sys
+ApiValidator:
+  Validating 'Universal' driver using ApiValidator.exe
+  cmd.exe /D /C "C:\Users\hawdi\AppData\Local\Temp\MSBuildTemp\tmp9bb29b9301a4490e867cdaa8e124f9f0.cmd"
+  "C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86\ApiValidator.exe" -DriverPackagePath:C:\Users\hawdi\Desktop\Obi\obs\bin\OBSMonitor.sys -SupportedApiXmlFiles:"C:\Program Files (x86)\Windows Kits\10\build\10.0.26100.0\universalDDIs\x64\UniversalDDIs.xml" -ModuleWhiteListXmlFiles:"C:\Program Files (x86)\Windows Kits\10\build\10.0.26100.0\universalDDIs\x64\ModuleWhiteList.xml" -ApiExtractorExePath:"C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86" 
+  Driver is 'Universal'.
+DriverPackageTarget:
+  Packaging up the following projects for the following configurations:
+  
+   Configuration='' Platform=''
+  
+  
+  The following files will be packaged:
+  
+  File to package:      .
+  Location in Package:  .
+  Requested by project: 
+  
+  
+Inf2Cat:
+  Inf2Cat task was skipped as there were no inf files to process
+  
+DrvCat:
+  DrvCat task was skipped as there was no catalog file to process
+  
+TlogCleanup:
+  Removing the following items from tlogs as they were removed from the project or build: C:\Users\hawdi\Desktop\ARD\src\driver\obs\obs_monitor.c
+FinalizeBuildStatus:
+  Deleting file "C:\Users\hawdi\Desktop\Obi\obs\build\obs_driver\OBSMonitor.tlog\unsuccessfulbuild".
+  Touching "C:\Users\hawdi\Desktop\Obi\obs\build\obs_driver\OBSMonitor.tlog\OBSMonitor.lastbuildstate".
+Done Building Project "C:\Users\hawdi\Desktop\Obi\obs\OBSMonitor.vcxproj" (default targets).
+
+Build succeeded.
+
+"C:\Users\hawdi\Desktop\Obi\obs\OBSMonitor.vcxproj" (default target) (1) ->
+(ClCompile target) -> 
+  C:\Users\hawdi\Desktop\Obi\obs\obs_monitor.c(1,1): warning C4117: macro name '_KERNEL_MODE' is reserved, '#define' ignored [C:\Users\hawdi\Desktop\Obi\obs\OBSMonitor.vcxproj]
+
+    1 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:07.87

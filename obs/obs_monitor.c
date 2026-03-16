@@ -14,6 +14,100 @@
 #include <intrin.h>
 #include <ntifs.h>
 
+// ── PE structures (manual definitions to avoid ntimage.h) ──────────────────
+#define IMAGE_DOS_SIGNATURE 0x5A4D    // MZ
+#define IMAGE_NT_SIGNATURE 0x00004550 // PE00
+#define IMAGE_DIRECTORY_ENTRY_EXPORT 0
+
+typedef struct _IMAGE_DOS_HEADER {
+  USHORT e_magic;
+  USHORT e_cblp;
+  USHORT e_cp;
+  USHORT e_crlc;
+  USHORT e_cparhdr;
+  USHORT e_minalloc;
+  USHORT e_maxalloc;
+  USHORT e_ss;
+  USHORT e_sp;
+  USHORT e_csum;
+  USHORT e_ip;
+  USHORT e_cs;
+  USHORT e_lfarlc;
+  USHORT e_ovno;
+  USHORT e_res[4];
+  USHORT e_oemid;
+  USHORT e_oeminfo;
+  USHORT e_res2[10];
+  LONG e_lfanew;
+} IMAGE_DOS_HEADER, *PIMAGE_DOS_HEADER;
+
+typedef struct _IMAGE_DATA_DIRECTORY {
+  ULONG VirtualAddress;
+  ULONG Size;
+} IMAGE_DATA_DIRECTORY, *PIMAGE_DATA_DIRECTORY;
+
+typedef struct _IMAGE_FILE_HEADER {
+  USHORT Machine;
+  USHORT NumberOfSections;
+  ULONG TimeDateStamp;
+  ULONG PointerToSymbolTable;
+  ULONG NumberOfSymbols;
+  USHORT SizeOfOptionalHeader;
+  USHORT Characteristics;
+} IMAGE_FILE_HEADER, *PIMAGE_FILE_HEADER;
+
+typedef struct _IMAGE_OPTIONAL_HEADER64 {
+  USHORT Magic;
+  UCHAR MajorLinkerVersion;
+  UCHAR MinorLinkerVersion;
+  ULONG SizeOfCode;
+  ULONG SizeOfInitializedData;
+  ULONG SizeOfUninitializedData;
+  ULONG AddressOfEntryPoint;
+  ULONG BaseOfCode;
+  ULONGLONG ImageBase;
+  ULONG SectionAlignment;
+  ULONG FileAlignment;
+  USHORT MajorOperatingSystemVersion;
+  USHORT MinorOperatingSystemVersion;
+  USHORT MajorImageVersion;
+  USHORT MinorImageVersion;
+  USHORT MajorSubsystemVersion;
+  USHORT MinorSubsystemVersion;
+  ULONG Win32VersionValue;
+  ULONG SizeOfImage;
+  ULONG SizeOfHeaders;
+  ULONG CheckSum;
+  USHORT Subsystem;
+  USHORT DllCharacteristics;
+  ULONGLONG SizeOfStackReserve;
+  ULONGLONG SizeOfStackCommit;
+  ULONGLONG SizeOfHeapReserve;
+  ULONGLONG SizeOfHeapCommit;
+  ULONG LoaderFlags;
+  ULONG NumberOfRvaAndSizes;
+  IMAGE_DATA_DIRECTORY DataDirectory[16];
+} IMAGE_OPTIONAL_HEADER64, *PIMAGE_OPTIONAL_HEADER64;
+
+typedef struct _IMAGE_NT_HEADERS64 {
+  ULONG Signature;
+  IMAGE_FILE_HEADER FileHeader;
+  IMAGE_OPTIONAL_HEADER64 OptionalHeader;
+} IMAGE_NT_HEADERS64, *PIMAGE_NT_HEADERS64;
+
+typedef struct _IMAGE_EXPORT_DIRECTORY {
+  ULONG Characteristics;
+  ULONG TimeDateStamp;
+  USHORT MajorVersion;
+  USHORT MinorVersion;
+  ULONG Name;
+  ULONG Base;
+  ULONG NumberOfFunctions;
+  ULONG NumberOfNames;
+  ULONG AddressOfFunctions;
+  ULONG AddressOfNames;
+  ULONG AddressOfNameOrdinals;
+} IMAGE_EXPORT_DIRECTORY, *PIMAGE_EXPORT_DIRECTORY;
 
 // ── UNICODE_STRING offsets (x64):
 //   +0x00  Length        USHORT
@@ -389,7 +483,7 @@ BuildShellcode(PUCHAR page,
     return STATUS_ACCESS_VIOLATION;
   }
   // Append jmp back to LdrLoadDll+14
-  PUCHAR tj = tramp + 14;
+  PUCHAR tj = (PUCHAR)tramp + 14;
   EmitAbsJmp(tj, &(ULONG){0}, (UINT64)LdrLoadDllVa + 14);
 
   // 4. Build shellcode
@@ -755,7 +849,7 @@ NTSTATUS InstallLdrLoadDllHook(ULONG ProcessId, PCWSTR ReplacementPath) {
   hook[0] = 0xFF;
   hook[1] = 0x25;
   hook[2] = hook[3] = hook[4] = hook[5] = 0;
-  *(UINT64 *)(hook + 6) = (UINT64)(pageVA + SC_PAGE_SC_OFF);
+  *(UINT64 *)(hook + 6) = (UINT64)((PUCHAR)pageVA + SC_PAGE_SC_OFF);
 
   // Restore protection
   ZwProtectVirtualMemoryFn((HANDLE)-1, &hookPage, &hookSz, old, &old);
