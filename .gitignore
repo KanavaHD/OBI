@@ -1,0 +1,17 @@
+# MSVC build artifacts
+*.obj
+*.exe
+*.pdb
+*.ilk
+*.exp
+*.lib
+*.tlog
+*.log
+*.recipe
+build_log.txt
+
+# Directories
+jacker/x64/
+obs/x64/
+.vs/
+ipch/
