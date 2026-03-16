@@ -28,23 +28,12 @@ bool OBSHijacker::InstallLdrHook(DWORD processId,
   if (m_hDriver == INVALID_HANDLE_VALUE)
     return false;
 
-  // Resolve LdrLoadDll address in the current process.
-  // Since ntdll.dll is loaded at the same VA in every process on the same
-  // system, this address is valid in the target process as well.
-  HMODULE hNtdll = GetModuleHandleW(L"ntdll.dll");
-  if (!hNtdll)
-    return false;
-
-  PVOID ldrAddr = (PVOID)GetProcAddress(hNtdll, "LdrLoadDll");
-  if (!ldrAddr)
-    return false;
-
-  HOOK_LDR_REQUEST req = {0};
-  req.ProcessId = processId;
-  req.LdrLoadDllAddress = ldrAddr;
-
   if (replacementPath.size() >= MAX_PATH)
     return false;
+
+  // Driver resolves LdrLoadDll itself via PEB traversal — just pass PID + path
+  HOOK_LDR_REQUEST req = {0};
+  req.ProcessId = processId;
   wcsncpy_s(req.ReplacementDllPath, replacementPath.c_str(), MAX_PATH - 1);
 
   DWORD bytesReturned = 0;
